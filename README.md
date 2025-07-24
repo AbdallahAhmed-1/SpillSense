@@ -92,3 +92,18 @@ npm start
 # opens http://localhost:5173 where you can upload files and chat
 
 
+## Contribution
+
+Thank you for considering contributing to SpillSense! We welcome all kinds of contributions—code, documentation, bug reports, feature requests, or simply spreading the word.
+
+1. 🎯 **Pick an issue**  
+   - Check our [issues page](https://github.com/your-org/spillsense/issues) for labeled “good first issue” or “help wanted.”  
+   - If you don’t find something, open a new issue to discuss your idea or bug.  
+
+2. 🍴 **Fork & branch**  
+   ```bash
+   git clone https://github.com/your-org/spillsense.git
+   cd spillsense
+   git checkout -b feat/your-feature
+
+
