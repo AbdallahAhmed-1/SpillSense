@@ -1,0 +1,21 @@
+Spill Number,Program Facility Name,Street 1,Locality,County,ZIP Code,SWIS Code,DEC Region,Spill Date,Received Date,Close Date,Material Name
+1001,Gamma Station,2nd Ave,Houston,Albany,17331,55-CCC,4,2023-01-02,2023-01-05,2023-11-13,Methane
+1002,Alpha Refinery,Maple Dr,Houston,Harris,40021,55-CCC,5,2023-05-15,2023-01-02,2023-10-17,Diesel
+1003,Alpha Refinery,Maple Dr,Tampa,Hillsborough,14207,55-CCC,1,2023-09-14,2023-01-02,2023-08-24,Crude Oil
+1004,Gamma Station,Main St,Houston,Sacramento,51347,44-BBB,4,2023-04-02,2023-01-04,2023-11-16,Crude Oil
+1005,Beta Pipeline,Maple Dr,Sacramento,Hillsborough,62581,55-CCC,4,2023-09-17,2023-01-04,2023-08-21,Crude Oil
+1006,Alpha Refinery,2nd Ave,Sacramento,Sacramento,45093,55-CCC,5,2023-02-24,2023-01-03,2023-09-18,Diesel
+1007,Alpha Refinery,Maple Dr,Sacramento,Albany,18675,44-BBB,4,2023-11-17,2023-01-02,2023-10-11,Crude Oil
+1008,Alpha Refinery,Elm St,Houston,Sacramento,37653,55-CCC,5,2023-06-02,2023-01-03,2023-10-04,Crude Oil
+1009,Gamma Station,2nd Ave,Tampa,Sacramento,84341,44-BBB,3,2023-11-24,2023-01-06,2023-10-21,Natural Gas
+1010,Alpha Refinery,Elm St,Houston,Albany,51245,44-BBB,5,2023-09-17,2023-01-02,2023-11-10,Crude Oil
+1011,Gamma Station,Maple Dr,Tampa,Sacramento,37869,33-AAA,1,2023-11-08,2023-01-02,2023-10-24,Methane
+1012,Gamma Station,Broadway,Houston,Harris,95909,33-AAA,1,2023-04-12,2023-01-05,2023-07-31,Diesel
+1013,Gamma Station,Main St,Sacramento,Albany,75435,55-CCC,5,2023-03-20,2023-01-02,2023-09-02,Natural Gas
+1014,Alpha Refinery,2nd Ave,Sacramento,Albany,61856,44-BBB,3,2023-07-11,2023-01-06,2023-08-27,Benzene
+1015,Gamma Station,Elm St,Albany,Albany,94259,33-AAA,3,2023-03-24,2023-01-03,2023-07-17,Diesel
+1016,Beta Pipeline,Broadway,Houston,Hillsborough,70142,33-AAA,1,2023-10-04,2023-01-03,2023-09-25,Methane
+1017,Alpha Refinery,Broadway,Houston,Hillsborough,28726,33-AAA,3,2023-09-29,2023-01-05,2023-07-06,Diesel
+1018,Alpha Refinery,2nd Ave,Albany,Sacramento,44718,33-AAA,4,2023-01-01,2023-01-06,2023-11-28,Methane
+1019,Alpha Refinery,2nd Ave,Sacramento,Albany,28301,55-CCC,2,2023-11-03,2023-01-03,2023-11-19,Methane
+1020,Alpha Refinery,Broadway,Houston,Sacramento,42325,33-AAA,4,2023-06-15,2023-01-04,2023-08-28,Benzene

@@ -1,0 +1,45 @@
+{
+  "background": {
+    "area_pixels": 180377,
+    "bounding_box": [
+      0,
+      0,
+      1080,
+      1920
+    ],
+    "solidity": 0.08980230518654526,
+    "eccentricity": 0.9264267667505336,
+    "perimeter": 13120.220705048032
+  },
+  "oil": {
+    "area_pixels": 0,
+    "bounding_box": null,
+    "solidity": null,
+    "eccentricity": null,
+    "perimeter": null
+  },
+  "others": {
+    "area_pixels": 1130440,
+    "bounding_box": [
+      0,
+      0,
+      1080,
+      1920
+    ],
+    "solidity": 0.6876988151242152,
+    "eccentricity": 0.9101685180980288,
+    "perimeter": 6564.344371239784
+  },
+  "water": {
+    "area_pixels": 764820,
+    "bounding_box": [
+      339,
+      0,
+      1073,
+      1914
+    ],
+    "solidity": 0.737609582501519,
+    "eccentricity": 0.918592264328703,
+    "perimeter": 4348.255013464689
+  }
+}

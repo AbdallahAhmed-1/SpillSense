@@ -1,0 +1,73 @@
+{
+  "query": "for adnoc oil gas",
+  "date_start": null,
+  "date_end": null,
+  "articles_found": 30,
+  "topics": [
+    "unknown"
+  ],
+  "articles": [
+    {
+      "title": "w"
+    },
+    {
+      "title": "e"
+    },
+    {
+      "title": "b"
+    },
+    {
+      "title": "_"
+    },
+    {
+      "title": "s"
+    },
+    {
+      "title": "e"
+    },
+    {
+      "title": "a"
+    },
+    {
+      "title": "r"
+    },
+    {
+      "title": "c"
+    },
+    {
+      "title": "h"
+    },
+    {
+      "title": "_"
+    },
+    {
+      "title": "2"
+    },
+    {
+      "title": "0"
+    },
+    {
+      "title": "2"
+    },
+    {
+      "title": "5"
+    },
+    {
+      "title": "0"
+    },
+    {
+      "title": "7"
+    },
+    {
+      "title": "2"
+    },
+    {
+      "title": "3"
+    },
+    {
+      "title": "_"
+    }
+  ],
+  "timestamp": "2025-07-23T22:45:52.936680",
+  "search_type": "oil_spill_news"
+}

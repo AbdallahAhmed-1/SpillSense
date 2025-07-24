@@ -1,0 +1,388 @@
+#Agent that creates visualizations and statistical summaries using tools, 
+#performs exploratory data analysis, and stores insights in state.
+
+
+# agents/explorator.py
+
+# Agent that creates visualizations and statistical summaries using tools, 
+# performs exploratory data analysis, and stores insights in state.
+
+# agents/explorator.py
+
+from typing import Dict, Any, List, Tuple, Optional, Union
+from state.state_utils import (
+    OilGasRCAState,
+    VisualizationArtifact,
+    save_figure_to_state,
+)
+from tools import analysis_tools
+from datetime import datetime
+from langchain_core.language_models import BaseLanguageModel
+from langchain.agents import Tool
+from langgraph.prebuilt import create_react_agent
+from langchain_core.messages import HumanMessage
+from langchain.agents.agent_types import AgentType
+from langchain_core.tools import tool
+import pandas as pd
+from functools import cached_property
+import logging
+import json
+import shutil
+from pathlib import Path
+
+
+# Directory constants for file moving
+RAW_CSV_DIR = Path("data/raw/csv")
+PROCESSED_CSV_DIR = Path("data/processed/csv")
+
+
+class Explorator:
+    def __init__(
+        self, 
+        llm: BaseLanguageModel, 
+        tool_modules: Optional[Union[Any, List[Any]]] = None,
+        name: str = "Explorator"
+    ):
+        self.llm = llm
+        self.name = name
+        self._tool_modules = [tool_modules] if tool_modules and not isinstance(tool_modules, list) else (tool_modules or [analysis_tools])
+        
+    def _move_files_to_processed(self, state: OilGasRCAState) -> OilGasRCAState:
+        """Move CSV files from raw/ to processed/ directory after exploration."""
+        processed: list[str] = []
+        
+        # Get paths from state, default to empty list if not present
+        paths = state.get("paths", [])
+        if not paths:
+            print("[Explorator] No paths found in state for moving files")
+            return state
+        
+        for p_str in paths:
+            p = Path(p_str).resolve()
+            if not p.exists():
+                print(f"[Explorator] 🚫 file not found: {p}")
+                continue
+
+            # Move to processed/
+            dest = PROCESSED_CSV_DIR / p.name
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            try:
+                shutil.move(str(p), str(dest))
+                try:
+                    rel = dest.relative_to(Path.cwd())
+                except ValueError:
+                    rel = dest
+                print(f"[Explorator] 📁 moved → {rel}")
+            except shutil.Error:
+                print(f"[Explorator] ℹ️ {p.name} already in processed/")
+            
+            processed.append(str(dest))
+
+        # Update paths for downstream nodes
+        if processed:
+            state["paths"] = processed
+        
+        return state
+        
+    def create_data_bound_tools(self, df: pd.DataFrame, state: OilGasRCAState) -> List[Tool]:
+        """Create tools with DataFrame already bound."""
+        tools = []
+        
+        for module in self._tool_modules:
+            for fn in vars(module).values():
+                if self._is_valid_tool(fn):
+                    # Create a closure that captures df and state
+                    def make_bound_tool(tool_fn, data, state_ref):
+                        
+                        def bound_invoke(params_str: str) -> str:
+                            try:
+                                # Parse parameters if JSON, otherwise treat as simple string
+                                if params_str.strip().startswith('{'):
+                                    params = json.loads(params_str)
+                                else:
+                                    # Simple parameter - assume it's a column name
+                                    params = {"column": params_str.strip()}
+                                
+                                # Always provide data context
+                                params["data"] = data
+                                result = tool_fn.invoke(params)
+
+                                #print(f"result from {tool_fn.name}: {result}")# Zainab -> added print statement to check result from tool_fn
+                                # Handle visualization results
+
+                                #_________________Zainab -> updated the if state to update state_ref _____________________
+
+                                if isinstance(result, str) and result.startswith('data:image'): 
+                                    # Store visualization in state using the corrected function
+                                    viz = save_figure_to_state(
+                                        state_ref, 
+                                        base64_image=result, 
+                                        plot_type=tool_fn.name, 
+                                        title=f"Analysis: {tool_fn.name}",
+                                        description=f"Generated by {tool_fn.name} tool"
+                                    )
+                                    print("=========================================================")
+                                    print(f"Visualization saved: {viz.title}")
+                                    print("=========================================================")
+                                    return f"Visualization created: {tool_fn.name}"
+                                
+                                else:
+                                    print(f"result for {tool_fn.name} is: \n {result}")
+                                    # Store non-visual results in appropriate state fields
+                                    if tool_fn.name == "basic_summary":
+                                        state_ref["basic_summary_result"] = result
+                                        
+                                    elif tool_fn.name == "missing_values_report":
+                                        try:
+                                            state_ref["missing_values_result"] = json.loads(result) if isinstance(result, str) else result
+                                            
+                                        except:
+                                            state_ref["missing_values_result"] = {"error": "Could not parse result"}
+                                    elif tool_fn.name == "frequency_distribution":
+                                        try:
+                                            state_ref["frequency_distribution_result"] = json.loads(result) if isinstance(result, str) else result
+                                            
+                                        except:
+                                            state_ref["frequency_distribution_result"] = {"error": "Could not parse result"}
+                                    elif tool_fn.name == "define_outliers":
+                                        state_ref["outliers_result"] = result
+                                        
+                                
+                                return str(result)
+                            except Exception as e:
+                                return f"Error in {tool_fn.name}: {str(e)}"
+                        
+                        return bound_invoke
+                    
+                    tools.append(Tool(
+                        name= getattr(fn, 'name', None) or getattr(fn, '__name__', None) or f"tool_{len(tools)}",
+                        func=make_bound_tool(fn, df, state),
+                        description=getattr(fn, 'description', fn.__doc__ or f"Tool: {fn.__name__}")
+                    ))
+        
+        return tools
+
+    def _create_analysis_prompt(self, df: pd.DataFrame) -> str:
+        """Create a focused analysis prompt for the LLM."""
+        return f"""You are analyzing a dataset.
+
+        Dataset: {df.shape[0]} rows, {df.shape[1]} columns
+        Columns: {list(df.columns)}
+        Data types: {df.dtypes.to_dict()}
+
+        Available tools:
+            - basic_summary: Get dataset overview
+            - missing_values_report: Check data quality  
+            - frequency_distribution: Analyze categorical columns (provide column name)
+            - distribution_plot: Visualize numeric distributions (provide column name)
+            - boxplot: Create boxplots for numeric columns (provide column name)
+            - barplot_counts: Create bar plots for categorical columns (provide column name)
+            - correlation_heatmap: Show feature relationships
+            - define_outliers: Identify anomalies (provide column name)
+            - cluster_kmeans: Perform clustering (provide JSON with features and n_clusters)
+            - pca_projection: Dimensionality reduction
+            - line_trend: Analyze trends over time (provide date column name)
+            - time_series_decomposition: Decompose time series (provide date column name)
+
+            Tasks:
+                1. Start with basic_summary to understand the data
+                2. Check data quality with missing_values_report
+                3. Analyze key columns relevant to maintenance issues
+                4. Create visualizations for important patterns
+                5. Identify outliers that might indicate problems
+                6. you must create at least one more useful visualization of each of the following:
+                    - distribution_plot
+                    - boxplot
+                    - barplot_counts
+                    - correlation_heatmap
+                    - cluster_kmeans
+                    - line_trend
+                    - time_series_decomposition
+                    - pca_projection
+
+            Work systematically through these steps. Each tool call will automatically store results.
+            For tools requiring column names, use the exact column names from the list above.
+            For clustering, use JSON format like: {{"features": ["col1", "col2"], "n_clusters": 3}}
+            
+            If you encounter any issues, provide a clear error message with the source of the error.
+            Do not return raw data or code, only insights and visualizations.
+
+"""
+
+    def _is_valid_tool(self, fn) -> bool:
+        """Validate tool has required attributes and methods."""
+        return (
+            hasattr(fn, 'invoke') and 
+            callable(fn.invoke) and 
+            (hasattr(fn, 'name') or hasattr(fn, '__name__'))
+        )
+
+    def __call__(self, state: OilGasRCAState) -> OilGasRCAState:
+        """Make the class callable for LangGraph compatibility"""
+        return self.run(state)
+    
+    def run(self, state: OilGasRCAState) -> OilGasRCAState:
+        """Main execution method with improved tool binding."""
+        df = state["cleaned_data"]
+        
+        # Initial checks
+        if df is None:
+            state["agent_messages"].append({"from_agent": self.name, "message": "No data to explore."})
+            print("========Printing state at Explorator run========")
+            print(state)
+            print("================================================")
+            return state
+
+        try:
+            # Create agent with data-bound tools
+            data_bound_tools = self.create_data_bound_tools(df, state)
+            agent = create_react_agent(model=self.llm, tools=data_bound_tools)
+            
+            # Optimal invocation - only messages
+            result = agent.invoke({
+                "messages": [HumanMessage(content=self._create_analysis_prompt(df))],
+            },config={"recursion_limit": 50}) # Zainab >> If the LLM isn't converging, a higher limit just wastes resources.
+            
+            # Process results
+            insights = []
+            if isinstance(result, dict) and "messages" in result and result["messages"]:
+                last_message = result["messages"][-1]
+                content = getattr(last_message, 'content', str(last_message))
+                insights.append(content)
+                
+                # Store insights in state
+                state["insights"] = state.get("insights", []) + insights
+                
+                logging.info(f"[Explorator] Generated {len(insights)} insights")
+
+        except Exception as e:
+            error_msg = f"LLM analysis failed: {str(e)}"
+            state["warnings"].append(error_msg)
+            logging.error(f"[Explorator] {error_msg}")
+            
+            # Run fallback analysis if LLM fails
+            try:
+                fallback_insights, fallback_visualizations, fallback_warnings = self.run_fallback_analyses(
+                    df, state.get("analysis_params", {})
+                )
+                state["insights"] = state.get("insights", []) + fallback_insights
+                state["visualizations"] = state.get("visualizations", []) + fallback_visualizations
+                state["warnings"].extend(fallback_warnings)
+            except Exception as fallback_error:
+                state["warnings"].append(f"Fallback analysis also failed: {str(fallback_error)}")
+
+        # Mark exploration as completed
+        state["exploration_completed"] = True
+        
+
+        state["agent_messages"].append({
+            "from_agent": self.name, 
+            "message": "Exploration completed successfully."
+        })
+        
+        # After exploration is complete, move files to processed directory
+        print("[Explorator] Moving files to processed directory...")
+        state = self._move_files_to_processed(state)
+        
+        print(f"[Explorator] Visualizations count: {len(state.get('visualizations', []))}")
+        for viz in state.get('visualizations', []):
+            print(f" - Visualization title: {viz.title}, type: {viz.plot_type}")
+
+        return state
+
+    def run_fallback_analyses(self, df: pd.DataFrame, params: Dict[str, Any]) -> Tuple[List[str], List[VisualizationArtifact], List[str]]:
+        """Fallback analyses if LLM agent fails."""
+        insights = []
+        visualizations = []
+        warnings = []
+
+        col = params.get("column")
+        date_col = params.get("date_col")
+        features = params.get("features", [])
+
+        # Basic summary (always run)
+        try:
+            summary = analysis_tools.basic_summary.invoke({"data": df})
+            insights.append(f"Basic Summary: {summary}")
+        except Exception as e:
+            warnings.append(f"Basic summary failed: {e}")
+
+        # Column-specific analysis
+        if col and col in df.columns:
+            try:
+                visualizations.extend(self._safe_viz(df, col))
+                outliers = analysis_tools.define_outliers.invoke({"data": df, "column": col})
+                insights.append(f"Outliers in {col}: {outliers}")
+                
+                freq_dist = analysis_tools.frequency_distribution.invoke({"data": df, "column": col})
+                insights.append(f"Frequency distribution for {col}: {freq_dist}")
+            except Exception as e:
+                warnings.append(f"Column analysis for {col} failed: {e}")
+
+        # Date column analysis
+        if date_col and date_col in df.columns:
+            try:
+                encoded = analysis_tools.line_trend.invoke({"data": df, "date_col": date_col})
+                visualizations.append(self._wrap_viz(encoded, "line_trend", f"Trend Over Time: {date_col}"))
+            except Exception as e:
+                warnings.append(f"Trend plot for {date_col} failed: {e}")
+
+        # Correlation analysis
+        try:
+            encoded = analysis_tools.correlation_heatmap.invoke({"data": df})
+            visualizations.append(self._wrap_viz(encoded, "correlation", "Correlation Matrix"))
+        except Exception as e:
+            warnings.append(f"Correlation plot failed: {e}")
+
+        # Clustering if features provided
+        if len(features) >= 2:
+            try:
+                encoded = analysis_tools.cluster_kmeans.invoke({
+                    "data": df, 
+                    "features": features, 
+                    "n_clusters": params.get("n_clusters", 3)
+                })
+                visualizations.append(self._wrap_viz(encoded, "clustering", "KMeans Clustering"))
+            except Exception as e:
+                warnings.append(f"Clustering failed: {e}")
+
+        return insights, visualizations, warnings
+
+    def _safe_viz(self, df: pd.DataFrame, col: str) -> List[VisualizationArtifact]:
+        """Generate appropriate visualizations for a given column."""
+        plots = []
+        
+        if col not in df.columns:
+            return plots
+
+        is_numeric = pd.api.types.is_numeric_dtype(df[col])
+
+        if is_numeric:
+            plot_funcs = [
+                (analysis_tools.distribution_plot, "distribution", f"Distribution of {col}"),
+                (analysis_tools.boxplot, "boxplot", f"Boxplot of {col}"),
+            ]
+        else:
+            plot_funcs = [
+                (analysis_tools.barplot_counts, "barplot", f"Barplot of {col}"),
+            ]
+
+        for fn, plot_type, title in plot_funcs:
+            try:
+                encoded = fn.invoke({"data": df, "column": col})
+                plots.append(self._wrap_viz(encoded, plot_type, title))
+            except Exception as e:
+                logging.warning(f"Skipping {plot_type} for {col}: {e}")
+
+        return plots
+
+    def _wrap_viz(self, base64_str: str, plot_type: str, title: str) -> VisualizationArtifact:  
+        """Wrap base64 string in VisualizationArtifact."""
+        return VisualizationArtifact(
+            plot_type=plot_type,
+            title=title,
+            description=f"Auto-generated {plot_type} plot",
+            base64_image=base64_str,
+            metadata={"source": "Explorator"},
+            created_at=datetime.now()
+        )

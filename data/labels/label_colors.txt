@@ -1,0 +1,4 @@
+0 0 0 background
+255 0 124 oil
+255 204 51 others
+51 221 255 water

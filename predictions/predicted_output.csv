@@ -1,0 +1,11 @@
+Spill Number,Program Facility Name,Street 1,Street 2,Locality,County,ZIP Code,SWIS Code,DEC Region,Spill Date,Received Date,Contributing Factor,Waterbody,Source,Close Date,Material Name,Material Family,Quantity,Units,Recovered,Predicted_Severity
+100001,Facility 0,Street 0,,Locality 0,County 0,12345,1000,1,01/01/2023,01/02/2023,Unknown,River,Residential,10/15/2001,unknown material,Other,10.0,Gallons,0.0,low
+100002,Facility 1,Street 1,,Locality 1,County 1,12345,1001,2,01/02/2023,01/03/2023,Other,Lake,Industrial,09/17/2004,raw sewage,Other,0.0,,0.0,low
+100003,Facility 2,Street 2,,Locality 2,County 0,12345,1002,3,01/03/2023,01/04/2023,Tank Failure,,Unknown,09/17/2004,raw sewage,Other,0.0,Pounds,0.0,low
+100004,Facility 3,Street 3,,Locality 0,County 1,12345,1003,1,01/04/2023,01/05/2023,Equipment Failure,Stream,Commercial,10/28/2002,transformer oil,Petroleum,1.0,Gallons,0.0,low
+100005,Facility 4,Street 4,,Locality 1,County 0,12345,1004,2,01/05/2023,01/06/2023,Abandoned Drums,,Vehicle,01/22/2003,transformer oil,Petroleum,6.0,Gallons,6.0,low
+100006,Facility 5,Street 5,,Locality 2,County 1,12345,1005,3,01/06/2023,01/07/2023,Traffic Accident,Bay,Unknown,08/25/2004,#2 fuel oil,Petroleum,75.0,Gallons,0.0,low
+100007,Facility 6,Street 6,,Locality 0,County 0,12345,1006,1,01/07/2023,01/08/2023,Tank Failure,,Industrial,08/01/2001,unknown material,Other,0.0,Gallons,0.0,low
+100008,Facility 7,Street 7,,Locality 1,County 1,12345,1007,2,01/08/2023,01/09/2023,Unknown,Pond,Residential,05/14/2002,unknown material,Other,0.0,Gallons,0.0,low
+100009,Facility 8,Street 8,,Locality 2,County 0,12345,1008,3,01/09/2023,01/10/2023,Other,Lake,Unknown,08/29/1996,antifreeze,Other,2.0,Gallons,2.0,low
+100010,Facility 9,Street 9,,Locality 0,County 1,12345,1009,1,01/10/2023,01/11/2023,Abandoned Drums,,Commercial,04/05/2004,#2 fuel oil,Petroleum,0.0,Pounds,0.0,low

@@ -1,0 +1,13 @@
+Spill Number,SWIS Code,DEC Region,Program Facility Name,Street 1,Locality,County,ZIP Code,Spill Date,Received Date,Close Date,Material Name
+SN1000,922733,8,Alpha Plant,789 Oak St,Southport,Albany,17455,10/01/2022,08/02/2022,05/20/2020,Diesel
+SN1001,595948,1,Bravo Refinery,123 Main St,Northfield,Queens,76562,01/07/2019,03/22/2023,12/18/2021,Gasoline
+SN1002,946721,2,Alpha Plant,123 Main St,Southport,Queens,20500,11/04/2018,12/31/2017,01/29/2017,Diesel
+SN1003,526833,1,Bravo Refinery,123 Main St,Southport,Erie,34356,01/24/2025,06/24/2017,09/11/2024,Crude Oil
+SN1004,299659,7,Bravo Refinery,123 Main St,Southport,Queens,18981,07/26/2018,12/27/2021,05/28/2025,Gasoline
+SN1005,198907,6,Alpha Plant,456 Elm St,Southport,Kings,87992,08/04/2024,11/01/2022,05/15/2020,Diesel
+SN1006,201639,2,Alpha Plant,456 Elm St,Southport,Kings,18907,10/22/2020,07/14/2022,07/18/2018,Diesel
+SN1007,790993,4,Bravo Refinery,456 Elm St,Easton,Erie,98501,02/20/2018,01/26/2021,03/13/2019,Gasoline
+SN1008,551989,4,Charlie Station,123 Main St,Easton,Kings,40828,12/19/2018,01/16/2024,05/22/2024,Natural Gas
+SN1009,471507,4,Alpha Plant,456 Elm St,Easton,Kings,62923,03/04/2019,12/23/2017,09/08/2024,Diesel
+SN1010,544154,9,Alpha Plant,123 Main St,Easton,Albany,25713,08/25/2019,04/10/2018,06/25/2019,Crude Oil
+SN1011,531071,8,Charlie Station,123 Main St,Easton,Queens,84668,12/18/2021,02/23/2022,02/13/2023,Diesel

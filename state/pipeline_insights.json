@@ -1,0 +1,136 @@
+{
+  "csv_analysis": [
+    {
+      "file": "9d5207ad-1314-463c-b761-5db9eae57047.csv",
+      "total_records": 10,
+      "predictions_made": 10,
+      "timestamp": "2025-07-23T17:03:52.882297"
+    },
+    {
+      "file": "predicted_20250723_170352.csv",
+      "total_records": 10,
+      "predictions_made": 10,
+      "timestamp": "2025-07-23T17:44:43.174792"
+    },
+    {
+      "file": "predicted_20250723_174443.csv",
+      "total_records": 10,
+      "predictions_made": 10,
+      "timestamp": "2025-07-23T17:52:01.669977"
+    },
+    {
+      "file": "predicted_20250723_175201.csv",
+      "total_records": 10,
+      "predictions_made": 10,
+      "timestamp": "2025-07-23T21:40:38.525226"
+    },
+    {
+      "file": "predicted_20250723_214038.csv",
+      "total_records": 10,
+      "predictions_made": 10,
+      "timestamp": "2025-07-23T21:45:33.265272"
+    },
+    {
+      "file": "predicted_20250723_214533.csv",
+      "total_records": 10,
+      "predictions_made": 10,
+      "timestamp": "2025-07-23T21:50:28.140814"
+    },
+    {
+      "file": "predicted_20250723_215028.csv",
+      "total_records": 10,
+      "predictions_made": 10,
+      "timestamp": "2025-07-23T21:55:58.634331"
+    },
+    {
+      "file": "small_spill_incidents.csv",
+      "total_records": 10,
+      "predictions_made": 10,
+      "timestamp": "2025-07-23T22:15:22.796776"
+    },
+    {
+      "file": "03bff9f4-407d-401a-b509-5558f4c35e30.csv",
+      "total_records": 558852,
+      "predictions_made": 558852,
+      "timestamp": "2025-07-23T22:36:29.143140"
+    },
+    {
+      "file": "predicted_20250723_223626.csv",
+      "total_records": 558852,
+      "predictions_made": 558852,
+      "timestamp": "2025-07-23T22:37:02.882223"
+    }
+  ],
+  "hsi_analysis": [],
+  "image_analysis": [
+    {
+      "image": "oilspill.1591783104.jpg",
+      "uploaded": true,
+      "timestamp": "2025-07-23T01:48:05.380747"
+    },
+    {
+      "image": "os-03-skimming-oil.jpg",
+      "uploaded": true,
+      "timestamp": "2025-07-23T01:48:33.267288"
+    },
+    {
+      "image": "oilspill.1591783104.jpg",
+      "uploaded": true,
+      "timestamp": "2025-07-23T02:09:33.624630"
+    },
+    {
+      "image": "os-03-skimming-oil.jpg",
+      "uploaded": true,
+      "timestamp": "2025-07-23T02:10:03.490331"
+    },
+    {
+      "image": "prevent-oil-spills-1024x818.jpg",
+      "uploaded": true,
+      "timestamp": "2025-07-23T02:10:20.389082"
+    },
+    {
+      "image": "pexels-fotios-photos-734973.jpg",
+      "uploaded": true,
+      "timestamp": "2025-07-23T02:10:35.744789"
+    }
+  ],
+  "web_scraping": [
+    {
+      "timestamp": "2025-07-23T11:53:46.942594",
+      "articles_found": 30,
+      "topics": [
+        "unknown"
+      ],
+      "query": "for adnoc in the last month"
+    },
+    {
+      "timestamp": "2025-07-23T16:45:36.055930",
+      "articles_found": 30,
+      "topics": [
+        "unknown"
+      ],
+      "query": "for ADNOC oil and gas."
+    },
+    {
+      "timestamp": "2025-07-23T22:45:52.937291",
+      "articles_found": 30,
+      "topics": [
+        "unknown"
+      ],
+      "query": "for adnoc oil gas"
+    },
+    {
+      "timestamp": "2025-07-23T22:49:29.049729",
+      "articles_found": 30,
+      "topics": [
+        "unknown"
+      ],
+      "query": "for adnoc oil gas"
+    },
+    {
+      "timestamp": "2025-07-23T22:53:20.113479",
+      "query": "for adnoc oil gas",
+      "report_generated": "web_search_20250723_225320.pdf"
+    }
+  ]
+}
