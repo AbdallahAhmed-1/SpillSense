@@ -118,7 +118,7 @@ Thank you for considering contributing to SpillSense! We welcome all kinds of co
    git clone https://github.com/your-org/spillsense.git
    cd spillsense
    git checkout -b feat/your-feature
-```
+
 ### Environment Variables
 
 Before you run SpillSense, you need to create a `.env` file in the project root and populate it with your own service credentials and database settings. Here’s a template and explanations for each variable:
