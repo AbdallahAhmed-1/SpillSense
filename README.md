@@ -119,4 +119,24 @@ Thank you for considering contributing to SpillSense! We welcome all kinds of co
    cd spillsense
    git checkout -b feat/your-feature
 ```
+### Environment Variables
+
+Before you run SpillSense, you need to create a `.env` file in the project root and populate it with your own service credentials and database settings. Here’s a template and explanations for each variable:
+
+```dotenv
+# Frontend
+VITE_BACKEND_URL=http://localhost:8000
+
+# Google Generative Language
+GOOGLE_API_KEY=        # Your Google Cloud API key
+GEMINI_API_ENDPOINT=https://generativelanguage.googleapis.com/v1beta/models
+
+# Database (MySQL)
+DB_HOST=               # e.g. localhost or your DB server address
+DB_USER=               # e.g. spillsense_user
+DB_PASSWORD=           # your secure DB password
+DB_NAME=               # e.g. spillsense_db
+
+# News API (GNews)
+GNEWS_API_KEY=         # Your GNews API key
 
