@@ -91,7 +91,7 @@ cd frontend
 npm start
 # opens http://localhost:5173 where you can upload files and chat
 
-
+```
 ## Contribution
 
 Thank you for considering contributing to SpillSense! We welcome all kinds of contributions—code, documentation, bug reports, feature requests, or simply spreading the word.
@@ -105,5 +105,5 @@ Thank you for considering contributing to SpillSense! We welcome all kinds of co
    git clone https://github.com/your-org/spillsense.git
    cd spillsense
    git checkout -b feat/your-feature
-
+```
 
