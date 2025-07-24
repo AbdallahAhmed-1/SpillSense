@@ -1,6 +1,6 @@
 # SpillSense
 
-> **SpillSense** is an AI-powered multi-agent system for analyzing oil spill data across image, CSV and MAT formats—delivering automated reports, visualizations and model metrics via an intuitive chat interface.
+> **SpillSense** is an AI-powered multi-agent system for analyzing oil spill data across image, CSV, JPG and MAT formats—delivering automated reports, visualizations and model metrics via an intuitive chat interface.
 >
 > 
 <table>
