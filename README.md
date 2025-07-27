@@ -139,4 +139,62 @@ DB_NAME=               # e.g. spillsense_db
 
 # News API (GNews)
 GNEWS_API_KEY=         # Your GNews API key
+```
 
+## Database Setup
+
+After you’ve created your `.env` file with the required DB credentials (see [Environment Variables](#environment-variables)), initialize your MySQL schema by running the provided `setup_db.py` script.
+
+### 1. Install the dependencies
+
+Make sure you have `mysql-connector-python` and `python-dotenv` installed in your backend virtual environment:
+
+```bash
+pip install mysql-connector-python python-dotenv
+```
+
+## Verify your .env
+Your .env (in the project root) should include something like:
+```bash
+DB_HOST=localhost
+DB_USER=spillsense_user
+DB_PASSWORD=your_password
+DB_NAME=spillsense_db
+```
+
+## Run the setup script
+From the project root (where setup_db.py lives):
+
+```bash
+python setup_db.py
+```
+
+## This will:
+Connect to your MySQL server using the credentials in .env
+Create the following tables if they do not already exist:
+files_metadata
+scan_results
+scene_metadata
+file_catalog
+link_table
+
+
+You should see output like:
+
+```bash
+Creating table `files_metadata`... OK ✅
+Creating table `scan_results`... OK ✅
+Creating table `scene_metadata`... OK ✅
+Creating table `file_catalog`... OK ✅
+Creating table `link_table`... OK ✅
+```
+
+
+## If you encounter an error:
+Invalid credentials: Check your .env values.
+Database does not exist: Create the database manually first:
+
+```bash
+CREATE DATABASE spillsense_db;
+```
+then rerun python setup_db.py.
