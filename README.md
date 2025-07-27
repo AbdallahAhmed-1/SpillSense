@@ -48,7 +48,7 @@
 
 ## Architecture
 
-![System Architecture](docs/images/455a05f5-2ead-4bb1-9530-f7e9beb0b351.png)
+![System Architecture](docs/images/Picture4.png)
 
 A multi-agent backend orchestrates Load → Preprocess → Train/Infer → Report, while a React frontend delivers a seamless chat and download experience.
 
