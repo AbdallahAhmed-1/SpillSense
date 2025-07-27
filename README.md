@@ -169,14 +169,14 @@ From the project root (where setup_db.py lives):
 python setup_db.py
 ```
 
-## This will:
-Connect to your MySQL server using the credentials in .env
-Create the following tables if they do not already exist:
-files_metadata
-scan_results
-scene_metadata
-file_catalog
-link_table
+This will:
+- Connect to your MySQL server using the credentials in `.env`
+- Create the following tables if they do not already exist:
+  - `files_metadata`
+  - `scan_results`
+  - `scene_metadata`
+  - `file_catalog`
+  - `link_table`
 
 
 You should see output like:
